@@ -16,10 +16,12 @@ import java.sql.Statement;
 public class App extends Application {
 
     private static Scene scene;
-//Pour connecter mariadb et la base lardon
+    //Pour connecter mariadb et la base lardon
     private static Connection cnx = null;
     //pour exécuter des requêtes
     private static Statement smt=null;
+    private Utilisateur utilisateur;
+    
     
     @Override
     public void start(Stage stage) throws IOException {

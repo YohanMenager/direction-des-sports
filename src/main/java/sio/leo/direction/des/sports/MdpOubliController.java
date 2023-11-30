@@ -59,7 +59,7 @@ public class MdpOubliController implements Initializable {
     private String questionSecrete = "Test Question Secrète";
     private String reponseQuestion = "réponse";
     private String nvMdp;
-    
+    private ResultSet rs;
     
     Connection cnx = DAO.getConnection();
     Statement smt = DAO.getStatement();
@@ -99,6 +99,43 @@ public class MdpOubliController implements Initializable {
         }
         return null;
     }*/
+    
+    private String getQuestionSecrete()
+    {
+        try
+        {
+            String query = "call getQuestionSecrete()";
+            rs= smt.executeQuery(query);
+            if(rs.next())
+            {
+                return rs.getString("");
+            }
+        }
+        catch(SQLException e)
+        {
+            System.out.println("erreur : "+e);  
+        }
+        return null;
+    }
+    
+    private String getReponseSecrete()
+    {
+        try
+        {
+            String query = "call getReponseSecrete()";
+            rs= smt.executeQuery(query);
+            if(rs.next())
+            {
+                return rs.getString("");
+            }
+        }
+        catch(SQLException e)
+        {
+            System.out.println("erreur : "+e);  
+        }
+        return null;
+    }    
+      
 
     @FXML
     private void validerReponse()
@@ -129,6 +166,20 @@ public class MdpOubliController implements Initializable {
         else
         {
             Erreur.setText("Mots de passe différents");
+        }
+    }
+    
+    private void envoiMotDePasee(String mdp)
+    {
+        try
+        {
+            String query="call updateMdp()";
+            smt.executeUpdate(query);
+        }
+        catch(SQLException e)
+        {
+            System.out.println("erreur : "+e);
+            Erreur.setText("Erreur dans le changement du mot de passe");
         }
     }
     
