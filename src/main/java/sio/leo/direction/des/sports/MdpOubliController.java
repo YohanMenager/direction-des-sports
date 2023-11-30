@@ -162,6 +162,16 @@ public class MdpOubliController implements Initializable {
         {
             Erreur.setText("");
             nvMdp = entreeNouveauMdp.getText();
+            
+            envoiMotDePasee(nvMdp);
+            try
+            {
+                App.setRoot("");
+            }
+            catch(Exception e)
+            {
+                System.out.println("Erreur : "+e);
+            }
         }
         else
         {
