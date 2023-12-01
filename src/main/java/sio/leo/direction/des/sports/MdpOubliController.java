@@ -77,7 +77,7 @@ public class MdpOubliController implements Initializable {
         nouveauMdp.setOpacity(0);
         ConfirmerMdp.setOpacity(0);
         validerNvMdp.setOpacity(0);
-        QuestionSecrete.setText(questionSecrete);
+        QuestionSecrete.setText(App.getUtilisateur().getNom());
         Erreur.setTextFill(Color.RED);
     }
 

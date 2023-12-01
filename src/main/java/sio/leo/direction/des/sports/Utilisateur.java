@@ -10,15 +10,25 @@ import java.time.LocalDate;
  *
  * @author MENAGER
  */
-class Utilisateur {
+public class Utilisateur {
     private String id;
     private String nom;
     private String prenom;
     private LocalDate ddn;
     private int categorie;
+    private String telephone;
 
     public String getId() {
         return id;
+    }
+
+    public Utilisateur(String id, String nom, String prenom, LocalDate ddn, int categorie, String telephone) {
+        this.id = id;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.ddn = ddn;
+        this.categorie = categorie;
+        this.telephone = telephone;
     }
 
     public String getNom() {

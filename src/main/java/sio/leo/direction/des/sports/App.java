@@ -20,17 +20,25 @@ public class App extends Application {
     private static Connection cnx = null;
     //pour exécuter des requêtes
     private static Statement smt=null;
-    private Utilisateur utilisateur;
+    private static Utilisateur utilisateur;
     
     
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("MdpOubli"), 640, 480);
+        scene = new Scene(loadFXML("AccueilConnexion"), 640, 480);
         stage.setScene(scene);
         stage.show();
         DAO.SeConnecter();
         cnx=DAO.getConnection();
         smt=DAO.getStatement();
+    }
+
+    public static void setUtilisateur(Utilisateur util) {
+        utilisateur = util;
+    }
+
+    public static Utilisateur getUtilisateur() {
+        return utilisateur;
     }
 
     
