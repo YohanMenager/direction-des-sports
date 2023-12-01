@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sio.leo.direction.des.sports.MdpOubliController">
-    
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sio.leo.direction.des.sports.MdpOubliController">
+   <children>
+      <Label layoutX="147.0" layoutY="24.0" text="Mot de passe oublié">
+         <font>
+            <Font size="34.0" />
+         </font></Label>
+      <Label fx:id="QuestionSecrete" layoutX="244.0" layoutY="101.0" text="Question secrète" AnchorPane.leftAnchor="244.0" AnchorPane.rightAnchor="244.0">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Button fx:id="validerQuestion" layoutX="401.0" layoutY="153.0" mnemonicParsing="false" onAction="#validerReponse" text="valider" />
+      <TextField fx:id="reponseQuestionSecrete" layoutX="226.0" layoutY="153.0" promptText="votre réponse" />
+      <Label fx:id="nouveauMdp" layoutX="56.0" layoutY="241.0" text="Votre nouveau mot de passe" />
+      <PasswordField fx:id="entreeNouveauMdp" layoutX="226.0" layoutY="237.0" />
+      <PasswordField fx:id="entreeConfirmerMdp" layoutX="226.0" layoutY="290.0" />
+      <Label fx:id="ConfirmerMdp" layoutX="56.0" layoutY="294.0" text="Confirmer le mot de passe" />
+      <Button fx:id="validerNvMdp" layoutX="274.0" layoutY="340.0" mnemonicParsing="false" onAction="#validerMotDePasse" text="Valider" />
+      <Label fx:id="Erreur" layoutX="286.0" layoutY="192.0" />
+   </children>
 </AnchorPane>
