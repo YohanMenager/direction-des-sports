@@ -6,6 +6,9 @@ package sio.leo.direction.des.sports;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -49,6 +52,10 @@ public class AchatController implements Initializable {
     @FXML
     private Label AchatFait;
     
+    private ResultSet rs;
+    
+    Connection cnx = DAO.getConnection();
+    Statement smt = DAO.getStatement();
     public AchatController(){
 
     }
@@ -77,8 +84,17 @@ public class AchatController implements Initializable {
             else{
 
                 AchatFait.setText("L'achat a été enregistré.");
+                
             }
-
+    }
+    @FXML
+    public void setTarifUnitaire(){
+        String prixU= "CALL GetTarif_Piscine('"++"');";
+        rs=smt.executeQuery(query);
+        if rs.next()){
+            return rs.getString("");
+    }
+        TarifPiscine.setText(prixU);
     }
     
 //    public String NouveauxTickets(int quantite) throws SQLException{
