@@ -73,7 +73,7 @@
             </Button>
         </buttons>
       </ButtonBar>
-      <TextField fx:id="QuantitePiscine" layoutX="135.0" layoutY="140.0" prefHeight="25.0" prefWidth="49.0" text="0" />
+      <TextField fx:id="QuantitePiscine" layoutX="135.0" layoutY="140.0" onKeyTyped="#setTarifTotal_Piscine" prefHeight="25.0" prefWidth="49.0" text="0" />
       <Label layoutX="40.0" layoutY="137.0" prefHeight="30.0" prefWidth="100.0" text="Quantité : ">
          <font>
             <Font size="20.0" />
@@ -89,8 +89,8 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="QuantitePatinoire" layoutX="344.0" layoutY="140.0" prefHeight="25.0" prefWidth="49.0" text="0" />
-      <TextField fx:id="QuantiteFitness" layoutX="529.0" layoutY="140.0" prefHeight="25.0" prefWidth="49.0" text="0" />
+      <TextField fx:id="QuantitePatinoire" layoutX="344.0" layoutY="140.0" onKeyTyped="#setTarifTotal_Patinoire" prefHeight="25.0" prefWidth="49.0" text="0" />
+      <TextField fx:id="QuantiteFitness" layoutX="529.0" layoutY="140.0" onKeyTyped="#setTarifTotal_Fitness" prefHeight="25.0" prefWidth="49.0" text="0" />
       <Label fx:id="TarifPiscine" layoutX="167.0" layoutY="91.0" text=" ">
          <font>
             <Font size="20.0" />
