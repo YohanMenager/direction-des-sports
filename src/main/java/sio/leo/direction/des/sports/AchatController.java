@@ -130,6 +130,16 @@ public void Achatfini() {
             callableStatement.setInt(3, valeurPat);
             callableStatement.executeUpdate();
         }
+         try (PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
+                    secondCallableStatement.setString(1, "pat");
+                    secondCallableStatement.setString(2, "ADM10");
+                    secondCallableStatement.setInt(3, valeurPat);
+                    secondCallableStatement.executeUpdate();
+                } catch (SQLException ex) {
+                    // Gérer l'erreur de la deuxième procédure stockée
+                    System.out.println("Erreur lors de l'exécution de la deuxième procédure stockée : " + ex.getMessage());
+                }
+            
 
         // Update piscine quantity
         try (PreparedStatement callableStatement = cnx.prepareStatement("{CALL AjoutTicket(?, ?, ?)}")) {
