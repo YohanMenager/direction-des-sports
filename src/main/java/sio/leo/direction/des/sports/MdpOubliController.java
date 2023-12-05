@@ -74,8 +74,6 @@ public class MdpOubliController implements Initializable {
     
     Connection cnx = DAO.getConnection();
     
-    //private App app = new App();
-    
     
     /**
      * Initializes the controller class.
@@ -98,24 +96,17 @@ public class MdpOubliController implements Initializable {
     @FXML
     private void getQuestionSecrete()
     {
-        int a =0;
         try
         {
-            //String query = "call getQuestionSecrete('"+identifiant.getText()+"')";
             String query = "call getQuestionSecrete(?);";
             pstmt = cnx.prepareStatement(query);
             {
                 pstmt.setString(1, identifiant.getText());
             }
-            a++;
-            System.out.println(pstmt.toString());
             rs= pstmt.executeQuery();
-            a++;
-            System.out.println(a);
             if(rs.next())
             {
-            a++;
-            System.out.println(a);
+                Erreur.setText("");
                 QuestionSecrete.setText(rs.getString("question"));
                 QuestionSecrete.setOpacity(1);
                 reponseQuestionSecrete.setOpacity(1);
@@ -132,10 +123,14 @@ public class MdpOubliController implements Initializable {
                     reponseQuestion=rs.getString("UTI_REPONSE_SECRETE");
                 }
             }
+            else
+            {
+                Erreur.setText("Cet identifiant n'existe pas");
+            }
         }
         catch(SQLException e)
         {
-            System.out.println("erreur getQuestionSecrete : "+a+" "+e);  
+            System.out.println("erreur getQuestionSecrete : "+e);  
         }
     }  
       
@@ -191,7 +186,6 @@ public class MdpOubliController implements Initializable {
             {
                 String originalData = mdp;
                 String encryptedMdp = Encryptor.encrypt(originalData);
-                //String query = "call modifMdp('"+encryptedMdp+"', '"+id+"');";
                 String query = "call modifMdp(?,?);";
                 pstmt = cnx.prepareStatement(query);
                 {
