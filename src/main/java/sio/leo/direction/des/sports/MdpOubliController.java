@@ -4,6 +4,7 @@
  */
 package sio.leo.direction.des.sports;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -38,7 +39,14 @@ public class MdpOubliController implements Initializable {
     private Label ConfirmerMdp;
     
     @FXML
+    private Label Erreur;
+        
+    
+    @FXML
     private TextField reponseQuestionSecrete;
+    
+    @FXML
+    private TextField identifiant;
     
     @FXML
     private PasswordField entreeNouveauMdp;
@@ -53,13 +61,14 @@ public class MdpOubliController implements Initializable {
     private Button validerNvMdp;
     
     @FXML
-    private Label Erreur;
+    private Button validerId;
     
     
-    private String questionSecrete = "Test Question Secrète";
-    private String reponseQuestion = "réponse";
+    
+    private String reponseQuestion;
     private String nvMdp;
     private ResultSet rs;
+    private String id;
     
     Connection cnx = DAO.getConnection();
     Statement smt = DAO.getStatement();
@@ -77,45 +86,40 @@ public class MdpOubliController implements Initializable {
         nouveauMdp.setOpacity(0);
         ConfirmerMdp.setOpacity(0);
         validerNvMdp.setOpacity(0);
-        QuestionSecrete.setText(App.getUtilisateur().getNom());
+        QuestionSecrete.setOpacity(0);
+        reponseQuestionSecrete.setOpacity(0);
+        validerQuestion.setOpacity(0);
         Erreur.setTextFill(Color.RED);
     }
 
-    /*private String Test() throws SQLException
-    {
-        try
-        {
-            String Query = "select * from UTILISATEUR where CAT_CODE=1;";
-            ResultSet rs = smt.executeQuery(Query);
-                
-            if(rs.next()){
-                
-                return rs.getString(1);
-            }
-        }
-        catch(SQLException e)
-        {
-            System.out.println("erreur : "+e);  
-        }
-        return null;
-    }*/
+
     
-    private String getQuestionSecrete()
+    @FXML
+    private void getQuestionSecrete()
     {
         try
         {
-            String query = "call getQuestionSecrete()";
+            String query = "select question from QUESTION_SECRETE join UTILISATEUR on UTILISATEUR.UTI_ID_QUESTION_SECRETE = QUESTION_SECRETE.id where UTI_ID ='"+ identifiant.getText() +"';";
             rs= smt.executeQuery(query);
             if(rs.next())
             {
-                return rs.getString("");
+                QuestionSecrete.setText(rs.getString("question"));
+                QuestionSecrete.setOpacity(1);
+                reponseQuestionSecrete.setOpacity(1);
+                validerQuestion.setOpacity(1);
+                id=identifiant.getText();
+                query="Select UTI_REPONSE_SECRETE from UTILISATEUR where UTI_ID ='"+ id +"';";
+                rs=smt.executeQuery(query);
+                if(rs.next())
+                {
+                    reponseQuestion=rs.getString("UTI_REPONSE_SECRETE");
+                }
             }
         }
         catch(SQLException e)
         {
             System.out.println("erreur : "+e);  
         }
-        return null;
     }
     
     private String getReponseSecrete()
@@ -163,12 +167,12 @@ public class MdpOubliController implements Initializable {
             Erreur.setText("");
             nvMdp = entreeNouveauMdp.getText();
             
-            envoiMotDePasee(nvMdp);
+            envoiMotDePasse(nvMdp, id);
             try
             {
-                App.setRoot("");
+                App.setRoot("AccueilConnexion");
             }
-            catch(Exception e)
+            catch(IOException e)
             {
                 System.out.println("Erreur : "+e);
             }
@@ -179,17 +183,21 @@ public class MdpOubliController implements Initializable {
         }
     }
     
-    private void envoiMotDePasee(String mdp)
+    private void envoiMotDePasse(String mdp, String id)
     {
         try
         {
-            String query="call updateMdp()";
-            smt.executeUpdate(query);
+            if(!mdp.isEmpty())
+            {
+                String originalData = mdp;
+                String encryptedMdp = Encryptor.encrypt(originalData);
+                String requete = "call modifMdp('"+encryptedMdp+"', '"+id+"');";
+                smt.executeUpdate(requete);
+            }
         }
-        catch(SQLException e)
+        catch(Exception e)
         {
-            System.out.println("erreur : "+e);
-            Erreur.setText("Erreur dans le changement du mot de passe");
+            System.out.println("Erreur : "+e);
         }
     }
     
