@@ -7,6 +7,7 @@ package sio.leo.direction.des.sports;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -69,9 +70,9 @@ public class MdpOubliController implements Initializable {
     private String nvMdp;
     private ResultSet rs;
     private String id;
+    private PreparedStatement pstmt;
     
     Connection cnx = DAO.getConnection();
-    Statement smt = DAO.getStatement();
     
     //private App app = new App();
     
@@ -97,19 +98,35 @@ public class MdpOubliController implements Initializable {
     @FXML
     private void getQuestionSecrete()
     {
+        int a =0;
         try
         {
-            String query = "select question from QUESTION_SECRETE join UTILISATEUR on UTILISATEUR.UTI_ID_QUESTION_SECRETE = QUESTION_SECRETE.id where UTI_ID ='"+ identifiant.getText() +"';";
-            rs= smt.executeQuery(query);
+            //String query = "call getQuestionSecrete('"+identifiant.getText()+"')";
+            String query = "call getQuestionSecrete(?);";
+            pstmt = cnx.prepareStatement(query);
+            {
+                pstmt.setString(1, identifiant.getText());
+            }
+            a++;
+            System.out.println(pstmt.toString());
+            rs= pstmt.executeQuery();
+            a++;
+            System.out.println(a);
             if(rs.next())
             {
+            a++;
+            System.out.println(a);
                 QuestionSecrete.setText(rs.getString("question"));
                 QuestionSecrete.setOpacity(1);
                 reponseQuestionSecrete.setOpacity(1);
                 validerQuestion.setOpacity(1);
                 id=identifiant.getText();
-                query="Select UTI_REPONSE_SECRETE from UTILISATEUR where UTI_ID ='"+ id +"';";
-                rs=smt.executeQuery(query);
+                query="call getReponseSecrete(?);";
+                pstmt = cnx.prepareStatement(query);
+                {
+                    pstmt.setString(1, id);
+                }
+                rs=pstmt.executeQuery();
                 if(rs.next())
                 {
                     reponseQuestion=rs.getString("UTI_REPONSE_SECRETE");
@@ -118,27 +135,9 @@ public class MdpOubliController implements Initializable {
         }
         catch(SQLException e)
         {
-            System.out.println("erreur : "+e);  
+            System.out.println("erreur getQuestionSecrete : "+a+" "+e);  
         }
-    }
-    
-    private String getReponseSecrete()
-    {
-        try
-        {
-            String query = "call getReponseSecrete()";
-            rs= smt.executeQuery(query);
-            if(rs.next())
-            {
-                return rs.getString("");
-            }
-        }
-        catch(SQLException e)
-        {
-            System.out.println("erreur : "+e);  
-        }
-        return null;
-    }    
+    }  
       
 
     @FXML
@@ -160,7 +159,7 @@ public class MdpOubliController implements Initializable {
     }
     
     @FXML
-    private void validerMotDePasse()
+    private void validerMotDePasse() throws SQLException
     {
         if(entreeConfirmerMdp.getText().equals(entreeNouveauMdp.getText()))
         {
@@ -170,11 +169,12 @@ public class MdpOubliController implements Initializable {
             envoiMotDePasse(nvMdp, id);
             try
             {
+                pstmt.close();
                 App.setRoot("AccueilConnexion");
             }
             catch(IOException e)
             {
-                System.out.println("Erreur : "+e);
+                System.out.println("Erreur validerMotDePasse : "+e);
             }
         }
         else
@@ -191,13 +191,19 @@ public class MdpOubliController implements Initializable {
             {
                 String originalData = mdp;
                 String encryptedMdp = Encryptor.encrypt(originalData);
-                String requete = "call modifMdp('"+encryptedMdp+"', '"+id+"');";
-                smt.executeUpdate(requete);
+                //String query = "call modifMdp('"+encryptedMdp+"', '"+id+"');";
+                String query = "call modifMdp(?,?);";
+                pstmt = cnx.prepareStatement(query);
+                {
+                    pstmt.setString(1, encryptedMdp);
+                    pstmt.setString(2, id);
+                }
+                pstmt.executeUpdate();
             }
         }
         catch(Exception e)
         {
-            System.out.println("Erreur : "+e);
+            System.out.println("Erreur envoiMotDePasse : "+e);
         }
     }
     
