@@ -147,7 +147,7 @@ public class MdpOubliController implements Initializable {
             ConfirmerMdp.setOpacity(1);
             validerNvMdp.setOpacity(1);              
         }
-      else
+        else
         {
             Erreur.setText("Réponse erronée");
         }
@@ -158,19 +158,27 @@ public class MdpOubliController implements Initializable {
     {
         if(entreeConfirmerMdp.getText().equals(entreeNouveauMdp.getText()))
         {
-            Erreur.setText("");
-            nvMdp = entreeNouveauMdp.getText();
-            
-            envoiMotDePasse(nvMdp, id);
-            try
+            if(entreeNouveauMdp.getText().isBlank() || ConfirmerMdp.getText().isBlank())
             {
-                pstmt.close();
-                App.setRoot("AccueilConnexion");
+                Erreur.setText("champ vide");
             }
-            catch(IOException e)
+            else
             {
-                System.out.println("Erreur validerMotDePasse : "+e);
+                Erreur.setText("");
+                nvMdp = entreeNouveauMdp.getText();
+
+                envoiMotDePasse(nvMdp, id);
+                try
+                {
+                    pstmt.close();
+                    App.setRoot("AccueilConnexion");
+                }
+                catch(IOException e)
+                {
+                    System.out.println("Erreur validerMotDePasse : "+e);
+                }                
             }
+
         }
         else
         {
