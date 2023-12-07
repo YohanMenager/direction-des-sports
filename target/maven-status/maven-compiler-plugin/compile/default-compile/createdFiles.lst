@@ -1,3 +1,9 @@
+sio\leo\direction\des\sports\modele\CrudInscription.class
+sio\leo\direction\des\sports\modele\DAO.class
+sio\leo\direction\des\sports\ConsommerTicketsController.class
 sio\leo\direction\des\sports\MdpOubliController.class
 module-info.class
+sio\leo\direction\des\sports\modele\Encryptor.class
+sio\leo\direction\des\sports\AchatController.class
+sio\leo\direction\des\sports\modele\CrudConnexion.class
 sio\leo\direction\des\sports\InscriptionController.class
