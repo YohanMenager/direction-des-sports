@@ -68,9 +68,9 @@ public class AchatController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 //        lance automatiquement les méthodes pour le tarif unitaire des sports
         try {
-            setTarifUnitaire(App.getUtilisateur().getId(),"fit");
-            setTarifUnitaire(App.getUtilisateur().getId(),"pat");
-            setTarifUnitaire(App.getUtilisateur().getId(),"pis");
+            setTarifUnitaire(App.getUtilisateur().getId(), "fit");
+            setTarifUnitaire(App.getUtilisateur().getId(), "pat");
+            setTarifUnitaire(App.getUtilisateur().getId(), "pis");
 
             // Add listeners to the labels to recalculate the total whenever they change
             TarifTotal_Fitness.textProperty().addListener((observable, oldValue, newValue) -> setTarifTotal());
@@ -108,7 +108,7 @@ public class AchatController implements Initializable {
                 AchatFait.setText("Veuillez saisir au moins une quantité.");
                 return;
             }
-//les 3 try suivants permettents d'appeller la procédure pour ajouter à la BDD les tickets achetés
+//modifier solde dans ACHETERTICKET
             try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
                 secondCallableStatement.setString(1, "pat");
                 secondCallableStatement.setString(2, App.getUtilisateur().getId());
@@ -127,6 +127,25 @@ public class AchatController implements Initializable {
                 secondCallableStatement.setInt(3, valeurPat);
                 secondCallableStatement.executeUpdate();
             }
+//modifier solde ticket
+            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
+                secondCallableStatement.setString(1, App.getUtilisateur().getId());
+                secondCallableStatement.setString(2, "pat");
+                secondCallableStatement.setInt(3, valeurPat);
+                secondCallableStatement.executeUpdate();
+            }
+            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
+                secondCallableStatement.setString(1, App.getUtilisateur().getId());
+                secondCallableStatement.setString(2, "fit");
+                secondCallableStatement.setInt(3, valeurPat);
+                secondCallableStatement.executeUpdate();
+            }
+            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
+                secondCallableStatement.setString(1, App.getUtilisateur().getId());
+                secondCallableStatement.setString(2, "pis");
+                secondCallableStatement.setInt(3, valeurPat);
+                secondCallableStatement.executeUpdate();
+            }
 // ajoute un message pour confirmer la transaction
             AchatFait.setText("L'achat a été enregistré.");
 
@@ -137,6 +156,7 @@ public class AchatController implements Initializable {
         }
     }
 // la méthode SetTarifUnitaire set le tarif d'un ticket par rapport à sa catégorie
+
     @FXML
     public void setTarifUnitaire(String user, String sport) throws SQLException {
 
@@ -257,7 +277,7 @@ public class AchatController implements Initializable {
                 TTF = Double.parseDouble(TarifTotal_Fitness.getText());
 
             }
-            
+
             // Vérification et conversion du champ TarifTotal_Patinoire
             if (!TarifTotal_Patinoire.getText().isEmpty()) {
                 TTPI = Double.parseDouble(TarifTotal_Patinoire.getText());

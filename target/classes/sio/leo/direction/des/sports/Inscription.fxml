@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -27,12 +28,12 @@
       <TextField fx:id="tfNom" layoutX="267.0" layoutY="29.0" />
       <TextField fx:id="tfPrenom" layoutX="267.0" layoutY="70.0" />
       <TextField fx:id="tfId" layoutX="267.0" layoutY="115.0" />
-      <TextField fx:id="tfMdp" layoutX="267.0" layoutY="159.0" />
       <TextField fx:id="tfCP" layoutX="267.0" layoutY="198.0" />
       <TextField fx:id="tfTel" layoutX="267.0" layoutY="270.0" />
       <TextField fx:id="tfQuestion" layoutX="441.0" layoutY="314.0" />
       <DatePicker fx:id="dateN" layoutX="267.0" layoutY="234.0" />
       <Label fx:id="res" layoutX="89.0" layoutY="400.0" prefHeight="17.0" prefWidth="444.0" />
       <ComboBox fx:id="choix" layoutY="314.0" onAction="#selectCombo" prefHeight="25.0" prefWidth="433.0" />
+      <PasswordField fx:id="tfMdp" layoutX="267.0" layoutY="159.0" />
    </children>
 </AnchorPane>
