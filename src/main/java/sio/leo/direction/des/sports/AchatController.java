@@ -109,15 +109,21 @@ public class AchatController implements Initializable {
                 return;
             }
 //modifier solde dans ACHETERTICKET
-            if (valeurPat >0 ) {
+            if (valeurPat > 0) {
                 try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
                     secondCallableStatement.setString(1, "pat");
                     secondCallableStatement.setString(2, App.getUtilisateur().getId());
                     secondCallableStatement.setInt(3, valeurPat);
                     secondCallableStatement.executeUpdate();
                 }
+                try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
+                    secondCallableStatement.setString(1, App.getUtilisateur().getId());
+                    secondCallableStatement.setString(2, "pat");
+                    secondCallableStatement.setInt(3, valeurPat);
+                    secondCallableStatement.executeUpdate();
+                }
             }
-            if (valeurPisc >0 ) {
+            if (valeurPisc > 0) {
 
                 try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
                     secondCallableStatement.setString(1, "pis");
@@ -125,8 +131,15 @@ public class AchatController implements Initializable {
                     secondCallableStatement.setInt(3, valeurPisc);
                     secondCallableStatement.executeUpdate();
                 }
+
+                try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
+                    secondCallableStatement.setString(1, App.getUtilisateur().getId());
+                    secondCallableStatement.setString(2, "pis");
+                    secondCallableStatement.setInt(3, valeurPat);
+                    secondCallableStatement.executeUpdate();
+                }
             }
-            if (valeurFit >0 ) {
+            if (valeurFit > 0) {
 
                 try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
                     secondCallableStatement.setString(1, "fit");
@@ -134,26 +147,15 @@ public class AchatController implements Initializable {
                     secondCallableStatement.setInt(3, valeurFit);
                     secondCallableStatement.executeUpdate();
                 }
+                try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
+                    secondCallableStatement.setString(1, App.getUtilisateur().getId());
+                    secondCallableStatement.setString(2, "fit");
+                    secondCallableStatement.setInt(3, valeurPat);
+                    secondCallableStatement.executeUpdate();
+                }
             }
 //modifier solde ticket
-            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
-                secondCallableStatement.setString(1, App.getUtilisateur().getId());
-                secondCallableStatement.setString(2, "pat");
-                secondCallableStatement.setInt(3, valeurPat);
-                secondCallableStatement.executeUpdate();
-            }
-            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
-                secondCallableStatement.setString(1, App.getUtilisateur().getId());
-                secondCallableStatement.setString(2, "fit");
-                secondCallableStatement.setInt(3, valeurPat);
-                secondCallableStatement.executeUpdate();
-            }
-            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {
-                secondCallableStatement.setString(1, App.getUtilisateur().getId());
-                secondCallableStatement.setString(2, "pis");
-                secondCallableStatement.setInt(3, valeurPat);
-                secondCallableStatement.executeUpdate();
-            }
+
 // ajoute un message pour confirmer la transaction
             AchatFait.setText("L'achat a été enregistré.");
 
