@@ -50,13 +50,8 @@ public class AchatController implements Initializable {
     @FXML
     private TextField QuantiteFitness;
     @FXML
-    private Button Retour;
-    @FXML
-    private Button Payer;
-    @FXML
     private Label AchatFait;
 
-    private int totalT;
     public ResultSet rs;
 
     Connection cnx = DAO.getConnection();
@@ -67,7 +62,6 @@ public class AchatController implements Initializable {
     Double total = 0.0;
 
     public AchatController() {
-        this.totalT = 0;
     }
 
     @Override
