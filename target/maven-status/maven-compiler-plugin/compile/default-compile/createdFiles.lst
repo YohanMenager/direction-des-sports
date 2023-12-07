@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 sio\leo\direction\des\sports\MdpOubliController.class
 module-info.class
 sio\leo\direction\des\sports\AchatController.class
 sio\leo\direction\des\sports\App.class
+=======
+sio\leo\direction\des\sports\AccueilConnexionController.class
+sio\leo\direction\des\sports\App.class
+sio\leo\direction\des\sports\MdpOubliController.class
+module-info.class
+sio\leo\direction\des\sports\InscriptionController.class
+>>>>>>> 8795a14ad3467617b9afec013836db15534c6132
