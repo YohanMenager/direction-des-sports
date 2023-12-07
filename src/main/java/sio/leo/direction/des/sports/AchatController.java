@@ -273,7 +273,6 @@ public class AchatController implements Initializable {
             // Vérification et conversion du champ TarifTotal_Piscine
             if (!TarifTotal_Piscine.getText().isEmpty()) {
                 TTPA = Double.parseDouble(TarifTotal_Piscine.getText());
-                total+=TTPA;
 
             }
 
