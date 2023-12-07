@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import sio.leo.direction.des.sports.modele.DAO;
 import sio.leo.direction.des.sports.modele.CrudConnexion;
@@ -28,7 +29,7 @@ public class AccueilConnexionController implements Initializable {
     @FXML
     private TextField idField;
     @FXML
-    private TextField mdpField;
+    private PasswordField mdpField;
     @FXML
     private Button btnMdpOublie;
     @FXML

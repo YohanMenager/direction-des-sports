@@ -16,9 +16,11 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import sio.leo.direction.des.sports.modele.CrudInscription;
 
@@ -55,7 +57,7 @@ public class InscriptionController implements Initializable {
     private TextField tfId;
     
     @FXML
-    private TextField tfMdp;
+    private PasswordField tfMdp;
     
     @FXML
     private TextField tfNom;
@@ -95,9 +97,18 @@ public class InscriptionController implements Initializable {
         
         String resSet = crd.insertUser(tfId.getText(), tfMdp.getText(), tfNom.getText(), tfPrenom.getText(), tfCP.getText(), dateN.getValue(), tfTel.getText(), tfQuestion.getText(),choixId);
         res.setText(resSet);
-        //System.out.println(crd.getMdp(tfId.getText(), tfMdp.getText()));
+        if(resSet.equals("Inscription réussie")){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, resSet);
+            alert.show();
+            App.setRoot("AccueilConnexion");
+        }
+        else{
+            Alert alertErreur = new Alert(Alert.AlertType.INFORMATION, resSet);
+            alertErreur.show();
+        }
         
-        App.setRoot("AccueilConnexion");
+        
+        
     }
     
     @FXML
