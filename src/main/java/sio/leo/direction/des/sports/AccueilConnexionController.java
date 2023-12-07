@@ -37,8 +37,7 @@ public class AccueilConnexionController implements Initializable {
     @FXML
     private Label erreurLabel;
     
-    private String idBase = "z";
-    private String mdpBase = "z";
+
     
    Connection cnx = DAO.getConnection();
     Statement smt = DAO.getStatement();
@@ -58,7 +57,7 @@ public class AccueilConnexionController implements Initializable {
         if(crudCnx.getMdp(idField.getText(), mdpField.getText())){
             App.setUtilisateur(crudCnx.requeteUtilisateur(idField.getText()));
             System.out.println(App.getUtilisateur().getNom());
-            App.setRoot("mdpOubli");
+            App.setRoot("Achat");
         }
         else{
             erreurLabel.setText("Identifiant / Mot de passe incorrect");
