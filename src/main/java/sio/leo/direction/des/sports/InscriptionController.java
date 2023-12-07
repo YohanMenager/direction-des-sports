@@ -37,6 +37,7 @@ public class InscriptionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        System.out.println(choixId + " " + resCombo);
         try {
             ArrayList<String> mesChoix = crd.getQuestionSecrete();
             for(int i=0;i<mesChoix.size();i++){
@@ -85,7 +86,7 @@ public class InscriptionController implements Initializable {
     
     private int choixId = 0;
     
-    private String resCombo = "";
+    private String resCombo ="vide";
 
     @FXML
     private void switchToAccueil() throws IOException {
@@ -95,17 +96,27 @@ public class InscriptionController implements Initializable {
     @FXML
     private void switchToAccueilDAO() throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception {
         
-        String resSet = crd.insertUser(tfId.getText(), tfMdp.getText(), tfNom.getText(), tfPrenom.getText(), tfCP.getText(), dateN.getValue(), tfTel.getText(), tfQuestion.getText(),choixId);
-        res.setText(resSet);
-        if(resSet.equals("Inscription réussie")){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, resSet);
-            alert.show();
-            App.setRoot("AccueilConnexion");
-        }
+        String resSet= "";
+        if(!"vide".equals(resCombo)){
+            resSet = crd.insertUser(tfId.getText(), tfMdp.getText(), tfNom.getText(), tfPrenom.getText(), tfCP.getText(), dateN.getValue(), tfTel.getText(), tfQuestion.getText(),choixId);
+            res.setText(resSet);
+            if(resSet.equals("Inscription réussie")){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, resSet);
+                alert.show();
+                App.setRoot("AccueilConnexion");
+            }
+            else{
+                Alert alertErreur = new Alert(Alert.AlertType.INFORMATION, resSet);
+                alertErreur.show();
+            }
+        }   
         else{
-            Alert alertErreur = new Alert(Alert.AlertType.INFORMATION, resSet);
-            alertErreur.show();
+            String erreur = "Veuillez remplir tout les champs";
+            Alert alerte = new Alert(Alert.AlertType.ERROR, erreur);
+            alerte.show();
         }
+        
+        
         
         
         
@@ -114,9 +125,9 @@ public class InscriptionController implements Initializable {
     @FXML
     private void selectCombo() throws SQLException {
         
-
+        //System.out.println(choixId + " " + resCombo);
         choixId = 1 + choix.getSelectionModel().getSelectedIndex();
-        //resCombo = choix.getSelectionModel().getSelectedItem();
+        resCombo = choix.getSelectionModel().getSelectedItem();
         System.out.println(choixId);
     }
     
