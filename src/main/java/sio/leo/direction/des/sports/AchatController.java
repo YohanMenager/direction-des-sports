@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import sio.leo.direction.des.sports.modele.DAO;
 
 /**
  * FXML Controller class
@@ -73,9 +74,9 @@ public class AchatController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 //        lance automatiquement les méthodes pour le tarif unitaire des sports
         try {
-            setTarifUnitaire("fit");
-            setTarifUnitaire("pat");
-            setTarifUnitaire("pis");
+            setTarifUnitaire(App.getUtilisateur().getId(),"fit");
+            setTarifUnitaire(App.getUtilisateur().getId(),"pat");
+            setTarifUnitaire(App.getUtilisateur().getId(),"pis");
 
             // Add listeners to the labels to recalculate the total whenever they change
             TarifTotal_Fitness.textProperty().addListener((observable, oldValue, newValue) -> setTarifTotal());
@@ -116,19 +117,19 @@ public class AchatController implements Initializable {
 //les 3 try suivants permettents d'appeller la procédure pour ajouter à la BDD les tickets achetés
             try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
                 secondCallableStatement.setString(1, "pat");
-                secondCallableStatement.setString(2, "ADM10");
+                secondCallableStatement.setString(2, App.getUtilisateur().getId());
                 secondCallableStatement.setInt(3, valeurPat);
                 secondCallableStatement.executeUpdate();
             }
             try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
                 secondCallableStatement.setString(1, "pis");
-                secondCallableStatement.setString(2, "ADM10");
+                secondCallableStatement.setString(2, App.getUtilisateur().getId());
                 secondCallableStatement.setInt(3, valeurPat);
                 secondCallableStatement.executeUpdate();
             }
             try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
                 secondCallableStatement.setString(1, "fit");
-                secondCallableStatement.setString(2, "ADM10");
+                secondCallableStatement.setString(2, App.getUtilisateur().getId());
                 secondCallableStatement.setInt(3, valeurPat);
                 secondCallableStatement.executeUpdate();
             }
@@ -143,13 +144,13 @@ public class AchatController implements Initializable {
     }
 // la méthode SetTarifUnitaire set le tarif d'un ticket par rapport à sa catégorie
     @FXML
-    public void setTarifUnitaire(String sport) throws SQLException {
+    public void setTarifUnitaire(String user, String sport) throws SQLException {
 
         // Préparez l'appel à la procédure stockée
         String callStatement = "{CALL GetTarif(?,?)}";
         try ( CallableStatement callableStatement = cnx.prepareCall(callStatement)) {
             // Remplacez 'adm10' par la valeur réelle à utiliser comme argument
-            callableStatement.setString(1, "adm10");
+            callableStatement.setString(1, user);
             callableStatement.setString(2, sport);
             // Exécutez la procédure stockée
             callableStatement.execute();
@@ -182,7 +183,7 @@ public class AchatController implements Initializable {
         String callStatement = "{CALL GetTarifTotal_Piscine(?,?)}";
         try ( CallableStatement callableStatement = cnx.prepareCall(callStatement)) {
             // Remplacez 'adm10' par la valeur réelle à utiliser comme argument
-            callableStatement.setString(1, "adm10");
+            callableStatement.setString(1, App.getUtilisateur().getId());
             callableStatement.setInt(2, quantite);
             // Exécutez la procédure stockée
             callableStatement.execute();
@@ -207,7 +208,7 @@ public class AchatController implements Initializable {
         String callStatement = "{CALL GetTarifTotal_Patinoire(?,?)}";
         try ( CallableStatement callableStatement = cnx.prepareCall(callStatement)) {
             // Remplacez 'adm10' par la valeur réelle à utiliser comme argument
-            callableStatement.setString(1, "adm10");
+            callableStatement.setString(1, App.getUtilisateur().getId());
             callableStatement.setInt(2, quantite);
             // Exécutez la procédure stockée
             callableStatement.execute();
@@ -233,7 +234,7 @@ public class AchatController implements Initializable {
         String callStatement = "{CALL GetTarifTotal_Fitness(?,?)}";
         try ( CallableStatement callableStatement = cnx.prepareCall(callStatement)) {
             // Remplacez 'adm10' par la valeur réelle à utiliser comme argument
-            callableStatement.setString(1, "adm10");
+            callableStatement.setString(1, App.getUtilisateur().getId());
             callableStatement.setInt(2, quantite);
             // Exécutez la procédure stockée
             callableStatement.execute();
@@ -260,26 +261,24 @@ public class AchatController implements Initializable {
 
             if (!TarifTotal_Fitness.getText().isEmpty()) {
                 TTF = Double.parseDouble(TarifTotal_Fitness.getText());
-                total+=TTF;
-                 TarifTotal.setText(String.valueOf(total));
+
             }
             
             // Vérification et conversion du champ TarifTotal_Patinoire
             if (!TarifTotal_Patinoire.getText().isEmpty()) {
                 TTPI = Double.parseDouble(TarifTotal_Patinoire.getText());
-                total+=TTPI;
-                TarifTotal.setText(String.valueOf(total));
+
             }
 
             // Vérification et conversion du champ TarifTotal_Piscine
             if (!TarifTotal_Piscine.getText().isEmpty()) {
                 TTPA = Double.parseDouble(TarifTotal_Piscine.getText());
                 total+=TTPA;
-                TarifTotal.setText(String.valueOf(total));
+
             }
 
-//            total = TTPA + TTF + TTPI;
-//            TarifTotal.setText(String.valueOf(total));
+            total = TTPA + TTF + TTPI;
+            TarifTotal.setText(String.valueOf(total));
 
         } catch (NumberFormatException e) {
             // Handle the exception when parsing integers fails

@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
+import sio.leo.direction.des.sports.modele.DAO;
+
 
 /**
  * JavaFX App
@@ -16,32 +18,32 @@ import java.sql.Statement;
 public class App extends Application {
 
     private static Scene scene;
+    
     //Pour connecter mariadb et la base lardon
     private static Connection cnx = null;
     //pour exécuter des requêtes
     private static Statement smt=null;
     private static Utilisateur utilisateur;
-    
-    
+
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("AccueilConnexion"), 640, 480);
         stage.setScene(scene);
         stage.show();
-        DAO.SeConnecter();
-        cnx=DAO.getConnection();
-        smt=DAO.getStatement();
+        
+        cnx = DAO.getConnection();
+        
+        smt = DAO.getStatement();
     }
-
+    
     public static void setUtilisateur(Utilisateur util) {
         utilisateur = util;
     }
-
+    
     public static Utilisateur getUtilisateur() {
         return utilisateur;
     }
 
-    
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
@@ -54,5 +56,5 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-    
+
 }
