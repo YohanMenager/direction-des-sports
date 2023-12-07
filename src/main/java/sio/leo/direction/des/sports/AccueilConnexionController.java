@@ -13,8 +13,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import sio.leo.direction.des.sports.DAO;
+import sio.leo.direction.des.sports.modele.DAO;
+import sio.leo.direction.des.sports.modele.CrudConnexion;
 
 
 /**
@@ -27,7 +29,7 @@ public class AccueilConnexionController implements Initializable {
     @FXML
     private TextField idField;
     @FXML
-    private TextField mdpField;
+    private PasswordField mdpField;
     @FXML
     private Button btnMdpOublie;
     @FXML
@@ -37,8 +39,7 @@ public class AccueilConnexionController implements Initializable {
     @FXML
     private Label erreurLabel;
     
-    private String idBase = "z";
-    private String mdpBase = "z";
+
     
    Connection cnx = DAO.getConnection();
     Statement smt = DAO.getStatement();
@@ -54,11 +55,10 @@ public class AccueilConnexionController implements Initializable {
   
     @FXML
     private void validerConnexion() throws IOException, Exception{
-        
         if(crudCnx.getMdp(idField.getText(), mdpField.getText())){
             App.setUtilisateur(crudCnx.requeteUtilisateur(idField.getText()));
-            System.out.println(App.getUtilisateur().getNom());
-            App.setRoot("mdpOubli");
+            System.out.println("nom = " + App.getUtilisateur().getNom() + ", prénom = " + App.getUtilisateur().getNom() + ", id = " + App.getUtilisateur().getId());
+            App.setRoot("Achat");
         }
         else{
             erreurLabel.setText("Identifiant / Mot de passe incorrect");
@@ -79,7 +79,8 @@ public class AccueilConnexionController implements Initializable {
         App.setRoot("MdpOubli");
     }
     
-
+    
+ 
     /**
      * Initializes the controller class.
      */

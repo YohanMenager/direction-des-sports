@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sio.leo.direction.des.sports;
+package sio.leo.direction.des.sports.modele;
 
 import java.security.SecureRandom;
 import javax.crypto.Cipher;

@@ -22,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import sio.leo.direction.des.sports.modele.DAO;
+import sio.leo.direction.des.sports.modele.Encryptor;
 
 /**
  * FXML Controller class
@@ -45,14 +47,21 @@ public class MdpOubliController implements Initializable {
     @FXML
     private Label Erreur;
         
+<<<<<<< HEAD
     //textfields
+=======
+    
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
     @FXML
     private TextField reponseQuestionSecrete;
     
     @FXML
     private TextField identifiant;
     
+<<<<<<< HEAD
     //champs de mot de passe
+=======
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
     @FXML
     private PasswordField entreeNouveauMdp;
     
@@ -68,6 +77,7 @@ public class MdpOubliController implements Initializable {
     
     @FXML
     private Button validerId;
+<<<<<<< HEAD
     
     
     //------------------------------création des propriétés pour les fonctions------------------------------//
@@ -79,6 +89,18 @@ public class MdpOubliController implements Initializable {
     
     Connection cnx = DAO.getConnection();//connexion à la base de données
     
+=======
+    
+    
+    
+    private String reponseQuestion;
+    private String nvMdp;
+    private ResultSet rs;
+    private String id;
+    private PreparedStatement pstmt;
+    
+    Connection cnx = DAO.getConnection();
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
     
     
     
@@ -98,19 +120,27 @@ public class MdpOubliController implements Initializable {
         QuestionSecrete.setOpacity(0);
         reponseQuestionSecrete.setOpacity(0);
         validerQuestion.setOpacity(0);
+<<<<<<< HEAD
         //le texte d'erreur sera de couleur rouge
+=======
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
         Erreur.setTextFill(Color.RED);
     }
 
 
+<<<<<<< HEAD
     /**
      * sert à récupérer la question secrète dans la base de données, et à assigner la réponse attendue
      */
+=======
+    
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
     @FXML
     private void getQuestionSecrete()
     {
         try
         {
+<<<<<<< HEAD
             String query = "call getQuestionSecrete(?);";//requête
             pstmt = cnx.prepareStatement(query);//statement
             {
@@ -142,11 +172,45 @@ public class MdpOubliController implements Initializable {
             else
             {
                 Erreur.setText("Cet identifiant n'existe pas");//si l'identifiant rentré n'existe pas
+=======
+            String query = "call getQuestionSecrete(?);";
+            pstmt = cnx.prepareStatement(query);
+            {
+                pstmt.setString(1, identifiant.getText());
+            }
+            rs= pstmt.executeQuery();
+            if(rs.next())
+            {
+                Erreur.setText("");
+                QuestionSecrete.setText(rs.getString("question"));
+                QuestionSecrete.setOpacity(1);
+                reponseQuestionSecrete.setOpacity(1);
+                validerQuestion.setOpacity(1);
+                id=identifiant.getText();
+                query="call getReponseSecrete(?);";
+                pstmt = cnx.prepareStatement(query);
+                {
+                    pstmt.setString(1, id);
+                }
+                rs=pstmt.executeQuery();
+                if(rs.next())
+                {
+                    reponseQuestion=rs.getString("UTI_REPONSE_SECRETE");
+                }
+            }
+            else
+            {
+                Erreur.setText("Cet identifiant n'existe pas");
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
             }
         }
         catch(SQLException e)
         {
+<<<<<<< HEAD
             System.out.println("erreur getQuestionSecrete : "+e);  //message d'erreur
+=======
+            System.out.println("erreur getQuestionSecrete : "+e);  
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
         }
     }  
       
@@ -168,7 +232,10 @@ public class MdpOubliController implements Initializable {
             ConfirmerMdp.setOpacity(1);
             validerNvMdp.setOpacity(1);              
         }
+<<<<<<< HEAD
         //si la réponse est incorrecte
+=======
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
         else
         {
             Erreur.setText("Réponse erronée");
@@ -185,11 +252,15 @@ public class MdpOubliController implements Initializable {
         //si les deux mot de passe entrés sont égaux
         if(entreeConfirmerMdp.getText().equals(entreeNouveauMdp.getText()))
         {
+<<<<<<< HEAD
             //si l'utilisateur a laissé les champs vides
+=======
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
             if(entreeNouveauMdp.getText().isBlank() || ConfirmerMdp.getText().isBlank())
             {
                 Erreur.setText("champ vide");
             }
+<<<<<<< HEAD
             //si tout est valide
             else
             {
@@ -207,6 +278,19 @@ public class MdpOubliController implements Initializable {
                     App.setRoot("AccueilConnexion");
                 }
                 //en cas d'erreur
+=======
+            else
+            {
+                Erreur.setText("");
+                nvMdp = entreeNouveauMdp.getText();
+
+                envoiMotDePasse(nvMdp, id);
+                try
+                {
+                    pstmt.close();
+                    App.setRoot("AccueilConnexion");
+                }
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
                 catch(IOException e)
                 {
                     System.out.println("Erreur validerMotDePasse : "+e);
@@ -221,15 +305,19 @@ public class MdpOubliController implements Initializable {
         }
     }
     
+<<<<<<< HEAD
     /**
      * sert à envoyer le mot de passe vers la base de données
      * @param mdp
      * @param id 
      */
+=======
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
     private void envoiMotDePasse(String mdp, String id)
     {
         try
         {
+<<<<<<< HEAD
             //s'il y a un mot de passe
             if(!mdp.isEmpty())
             {
@@ -239,15 +327,28 @@ public class MdpOubliController implements Initializable {
                 //requête sql
                 String query = "call modifMdp(?,?);";
                 //prepared statement
+=======
+            if(!mdp.isEmpty())
+            {
+                String originalData = mdp;
+                String encryptedMdp = Encryptor.encrypt(originalData);
+                String query = "call modifMdp(?,?);";
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
                 pstmt = cnx.prepareStatement(query);
                 {
                     pstmt.setString(1, encryptedMdp);
                     pstmt.setString(2, id);
                 }
+<<<<<<< HEAD
                 pstmt.executeUpdate();//exécution
             }
         }
         //en cas d'erreur
+=======
+                pstmt.executeUpdate();
+            }
+        }
+>>>>>>> 9fd0840748c99a9840b09a4f316dd5a06ec369da
         catch(Exception e)
         {
             System.out.println("Erreur envoiMotDePasse : "+e);

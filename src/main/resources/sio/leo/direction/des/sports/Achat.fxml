@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sio.leo.direction.des.sports.AchatController">
+   <children>
+      <Label layoutX="40.0" layoutY="38.0" prefHeight="45.0" prefWidth="95.0" text="Piscine" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="465.0">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="250.0" layoutY="38.0" text="Patinoire">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="435.0" layoutY="38.0" prefHeight="45.0" prefWidth="118.0" text="Fitness" AnchorPane.leftAnchor="435.0" AnchorPane.rightAnchor="47.0">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="40.0" layoutY="91.0" text="Tarif unitaire : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="250.0" layoutY="91.0" text="Tarif unitaire : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="435.0" layoutY="91.0" text="Tarif unitaire : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="40.0" layoutY="338.0" text="Total de la commande :">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="40.0" layoutY="185.0" text="Tarif total : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="435.0" layoutY="185.0" text="Tarif total : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="250.0" layoutY="185.0" text="Tarif total : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <ButtonBar layoutX="334.0" layoutY="331.0" prefHeight="44.0" prefWidth="237.0">
+        <buttons>
+            <Button fx:id="Retour" mnemonicParsing="false" text="Retour">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button fx:id="Payer" mnemonicParsing="false" onAction="#Achatfini" text="Payer">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+        </buttons>
+      </ButtonBar>
+      <TextField fx:id="QuantitePiscine" layoutX="135.0" layoutY="140.0" onKeyTyped="#setTarifTotal_Piscine" prefHeight="25.0" prefWidth="49.0" text="0" />
+      <Label layoutX="40.0" layoutY="137.0" prefHeight="30.0" prefWidth="100.0" text="Quantité : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="250.0" layoutY="137.0" prefHeight="30.0" prefWidth="100.0" text="Quantité : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="435.0" layoutY="137.0" prefHeight="30.0" prefWidth="100.0" text="Quantité : ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="QuantitePatinoire" layoutX="344.0" layoutY="140.0" onKeyTyped="#setTarifTotal_Patinoire" prefHeight="25.0" prefWidth="49.0" text="0" />
+      <TextField fx:id="QuantiteFitness" layoutX="529.0" layoutY="140.0" onKeyTyped="#setTarifTotal_Fitness" prefHeight="25.0" prefWidth="49.0" text="0" />
+      <Label fx:id="TarifPiscine" layoutX="167.0" layoutY="91.0" text=" ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="TarifPatinoire" layoutX="377.0" layoutY="91.0" text=" ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="TarifFitness" layoutX="559.0" layoutY="91.0" text=" ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="TarifTotal" layoutX="250.0" layoutY="338.0" text=" ">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="AchatFait" layoutX="83.0" layoutY="255.0" text=" ">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label fx:id="TarifTotal_Piscine" layoutX="144.0" layoutY="185.0" text="0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="TarifTotal_Patinoire" layoutX="350.0" layoutY="185.0" text="0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="TarifTotal_Fitness" layoutX="532.0" layoutY="185.0" text="0">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
