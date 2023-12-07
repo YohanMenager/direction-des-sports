@@ -109,23 +109,31 @@ public class AchatController implements Initializable {
                 return;
             }
 //modifier solde dans ACHETERTICKET
-            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
-                secondCallableStatement.setString(1, "pat");
-                secondCallableStatement.setString(2, App.getUtilisateur().getId());
-                secondCallableStatement.setInt(3, valeurPat);
-                secondCallableStatement.executeUpdate();
+            if (valeurPat >0 ) {
+                try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
+                    secondCallableStatement.setString(1, "pat");
+                    secondCallableStatement.setString(2, App.getUtilisateur().getId());
+                    secondCallableStatement.setInt(3, valeurPat);
+                    secondCallableStatement.executeUpdate();
+                }
             }
-            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
-                secondCallableStatement.setString(1, "pis");
-                secondCallableStatement.setString(2, App.getUtilisateur().getId());
-                secondCallableStatement.setInt(3, valeurPat);
-                secondCallableStatement.executeUpdate();
+            if (valeurPisc >0 ) {
+
+                try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
+                    secondCallableStatement.setString(1, "pis");
+                    secondCallableStatement.setString(2, App.getUtilisateur().getId());
+                    secondCallableStatement.setInt(3, valeurPisc);
+                    secondCallableStatement.executeUpdate();
+                }
             }
-            try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
-                secondCallableStatement.setString(1, "fit");
-                secondCallableStatement.setString(2, App.getUtilisateur().getId());
-                secondCallableStatement.setInt(3, valeurPat);
-                secondCallableStatement.executeUpdate();
+            if (valeurFit >0 ) {
+
+                try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL CreationTicket(?, ?, ?)}")) {
+                    secondCallableStatement.setString(1, "fit");
+                    secondCallableStatement.setString(2, App.getUtilisateur().getId());
+                    secondCallableStatement.setInt(3, valeurFit);
+                    secondCallableStatement.executeUpdate();
+                }
             }
 //modifier solde ticket
             try ( PreparedStatement secondCallableStatement = cnx.prepareStatement("{CALL AjoutTicketSolde(?, ?, ?)}")) {

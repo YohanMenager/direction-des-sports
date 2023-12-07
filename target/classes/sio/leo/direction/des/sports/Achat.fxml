@@ -111,7 +111,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="AchatFait" layoutX="83.0" layoutY="255.0" text=" ">
+      <Label fx:id="AchatFait" layoutX="40.0" layoutY="251.0" text=" ">
          <font>
             <Font size="36.0" />
          </font>
