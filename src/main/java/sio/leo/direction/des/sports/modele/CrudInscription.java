@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +30,7 @@ public class CrudInscription {
     
     private ResultSet rs =null;
     
-    public String insertUser(String id, String mdp, String nom, String prenom, String cp, LocalDate date, String num, String qst) throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception{
+    public String insertUser(String id, String mdp, String nom, String prenom, String cp, LocalDate date, String num, String qst, int idqst) throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception{
         try{
             if(!id.isEmpty() && !mdp.isEmpty() && !nom.isEmpty() && !num.isEmpty() && !qst.isEmpty() && !cp.isEmpty())
                 if(!idExist(id)){
@@ -45,7 +46,7 @@ public class CrudInscription {
                     int cpInt = Integer.parseInt(cp);
                     String originalData = mdp;
                     String encryptedMdp = Encryptor.encrypt(originalData);
-                    String requete = "INSERT INTO UTILISATEUR value ('"+id+"','"+nom+"','"+prenom+"','"+num+"','"+date+"', '"+categorie+"', '"+encryptedMdp+"', '"+qst+"', '"+cpInt+"', '1');";
+                    String requete = "INSERT INTO UTILISATEUR value ('"+id+"','"+nom+"','"+prenom+"','"+num+"','"+date+"', '"+categorie+"', '"+encryptedMdp+"', '"+qst+"', '"+cpInt+"', '"+idqst+"');";
                     smt.executeUpdate(requete);
                     return "Inscription réussie";
                 }
@@ -94,10 +95,10 @@ public class CrudInscription {
     }
     
     
-    public ComboBox<String> getQuestionSecrete() throws SQLException{
+    public ArrayList<String> getQuestionSecrete() throws SQLException{
         
-        ObservableList<String> options = FXCollections.observableArrayList();
-        String query = "SELECT id, question FROM QUESTION_SECRETE ORDER BY id";
+        ArrayList<String> options = new ArrayList<>();
+        String query = "SELECT question FROM QUESTION_SECRETE ORDER BY id";
         try (PreparedStatement preparedStatement = cnx.prepareStatement(query);) {
             this.rs = preparedStatement.executeQuery();
             while (this.rs.next()) {
@@ -105,9 +106,7 @@ public class CrudInscription {
                 options.add(rs.getString("question"));
             }
         }
-        ComboBox comboBoxItems = new ComboBox(options);
-
-        return comboBoxItems;
+        return options;
     }
     
     public Boolean idExist(String id) throws SQLException, SQLIntegrityConstraintViolationException{

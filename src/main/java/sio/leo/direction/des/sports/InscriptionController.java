@@ -9,9 +9,11 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -33,13 +35,20 @@ public class InscriptionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        /*
         try {
-            initComboBox();
+            ArrayList<String> mesChoix = crd.getQuestionSecrete();
+            for(int i=0;i<mesChoix.size();i++){
+                choix.getItems().add(mesChoix.get(i));
+            }
+            
+            
+            
+            
+            
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            Logger.getLogger(InscriptionController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+        
     } 
     
     @FXML
@@ -73,6 +82,8 @@ public class InscriptionController implements Initializable {
     private ComboBox<String> choix;
     
     private int choixId = 0;
+    
+    private String resCombo = "";
 
     @FXML
     private void switchToAccueil() throws IOException {
@@ -81,13 +92,24 @@ public class InscriptionController implements Initializable {
    
     @FXML
     private void switchToAccueilDAO() throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception {
-        String resSet = crd.insertUser(tfId.getText(), tfMdp.getText(), tfNom.getText(), tfPrenom.getText(), tfCP.getText(), dateN.getValue(), tfTel.getText(), tfQuestion.getText());
+        
+        String resSet = crd.insertUser(tfId.getText(), tfMdp.getText(), tfNom.getText(), tfPrenom.getText(), tfCP.getText(), dateN.getValue(), tfTel.getText(), tfQuestion.getText(),choixId);
         res.setText(resSet);
         //System.out.println(crd.getMdp(tfId.getText(), tfMdp.getText()));
         
         App.setRoot("AccueilConnexion");
     }
     
+    @FXML
+    private void selectCombo() throws SQLException {
+        
+
+        choixId = 1 + choix.getSelectionModel().getSelectedIndex();
+        //resCombo = choix.getSelectionModel().getSelectedItem();
+        System.out.println(choixId);
+    }
+    
+    /*
     @FXML
     private void initComboBox() throws SQLException {
         
