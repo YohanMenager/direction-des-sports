@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 /**
  *
- * @author MENAGER
+ * @author MENAGER BARAS
  */
 public class Utilisateur {
     private String id;

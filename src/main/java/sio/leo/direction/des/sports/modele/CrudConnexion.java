@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package sio.leo.direction.des.sports;
+package sio.leo.direction.des.sports.modele;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,11 +12,7 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import sio.leo.direction.des.sports.DAO;
-import sio.leo.direction.des.sports.Utilisateur;
-import java.time.LocalDate;
-import sio.leo.direction.des.sports.App;
-import sio.leo.direction.des.sports.DAO;
+import sio.leo.direction.des.sports.modele.DAO;
 import sio.leo.direction.des.sports.Utilisateur;
 
 /**
@@ -37,25 +33,14 @@ public class CrudConnexion {
                     String originalData = mdp;
                     String encryptedMdp = Encryptor.encrypt(originalData);
                     String requete = "SELECT UTI_PASSWORD FROM UTILISATEUR WHERE UTI_ID = ? AND UTI_PASSWORD = ?";
-                    try{PreparedStatement preparedStatement = cnx.prepareStatement(requete, ResultSet.TYPE_SCROLL_INSENSITIVE);
-                        {
-                            preparedStatement.setString(1, "'"+id+"'");
-                            preparedStatement.setString(2, "'"+encryptedMdp+"'");
-                            this.rs = preparedStatement.executeQuery();                      
-                        }
-                        preparedStatement.close();
-                    
-                    
-                    }
-                        catch(SQLException e)
-                        {
-                            System.out.println("erreur : "+e);
-                        }
+                    PreparedStatement preparedStatement = cnx.prepareStatement(requete, ResultSet.TYPE_SCROLL_INSENSITIVE);
+                    preparedStatement.setString(1, id);
+                    preparedStatement.setString(2, encryptedMdp);
                     //System.out.println(mdp);
                     //System.out.println(encryptedMdp);
+                    this.rs = preparedStatement.executeQuery();
                     while(rs.next()){
-                    System.out.println("\n TEST \n");
-                        String mdpCrypt  = rs.getString("UTI_MDP");
+                        String mdpCrypt  = rs.getString("UTI_PASSWORD");
                         //System.out.println(mdpCrypt);
                         if(encryptedMdp.equals(mdpCrypt)){
                             return true;
@@ -75,25 +60,13 @@ public class CrudConnexion {
         }
     }
      
-       public Boolean idExist(String id) throws SQLException, SQLIntegrityConstraintViolationException{
-        String requete = "SELECT UTI_ID FROM UTILISATEUR WHERE UTI_ID ='"+id+"';";
-        this.rs = smt.executeQuery(requete);
-        while(rs.next()){
-            String idAll  = rs.getString("UTI_ID");
-            if(idAll.equals(id)){
-                return true;
-            }
-        }   
-        return false;
-    }
-
     public Utilisateur requeteUtilisateur(String id)
     {
         Utilisateur leClient;
         try
         {
             
-            String query = "Select * from UTILISATEUR where UTI_ID = '?';";
+            String query = "Select * from UTILISATEUR where UTI_ID = ?;";
             PreparedStatement preparedStatement = cnx.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE);
             preparedStatement.setString(1, id);   
             this.rs = preparedStatement.executeQuery();
@@ -101,7 +74,10 @@ public class CrudConnexion {
             {
                 String nom=rs.getString("UTI_NOM");
                 String prenom=rs.getString("UTI_PRENOM");
-                LocalDate ddn=(LocalDate)rs.getObject("UTI_DDN");
+                java.sql.Date sqlDate = rs.getDate("UTI_DDN");
+                LocalDate ddn = sqlDate.toLocalDate();
+                //LocalDate ddn=(LocalDate)rs.getObject("UTI_DDN");
+                
                 int categorie = rs.getInt("CAT_CODE");
                 String telephone =rs.getString("UTI_TELEPHONE"); 
                 
@@ -118,6 +94,17 @@ public class CrudConnexion {
         return null;
         
     }
-        
-       
+     
+       public Boolean idExist(String id) throws SQLException, SQLIntegrityConstraintViolationException{
+        String requete = "SELECT UTI_ID FROM UTILISATEUR WHERE UTI_ID ='"+id+"';";
+        this.rs = smt.executeQuery(requete);
+        while(rs.next()){
+            String idAll  = rs.getString("UTI_ID");
+            if(idAll.equals(id)){
+                return true;
+            }
+        }   
+        return false;
+    }
+    
 }
