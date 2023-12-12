@@ -58,7 +58,7 @@ public class AccueilConnexionController implements Initializable {
         if(crudCnx.getMdp(idField.getText(), mdpField.getText())){
             App.setUtilisateur(crudCnx.requeteUtilisateur(idField.getText()));
             System.out.println("nom = " + App.getUtilisateur().getNom() + ", prénom = " + App.getUtilisateur().getNom() + ", id = " + App.getUtilisateur().getId());
-            App.setRoot("Achat");
+            App.setRoot("ConsommerTickets");
         }
         else{
             erreurLabel.setText("Identifiant / Mot de passe incorrect");
