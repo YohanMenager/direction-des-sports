@@ -61,7 +61,7 @@
       </Label>
       <ButtonBar layoutX="334.0" layoutY="331.0" prefHeight="44.0" prefWidth="237.0">
         <buttons>
-            <Button fx:id="Retour" mnemonicParsing="false" text="Retour">
+            <Button fx:id="Retour" mnemonicParsing="false" onAction="#switchToConsommerTickets" text="Retour">
                <font>
                   <Font size="20.0" />
                </font>
