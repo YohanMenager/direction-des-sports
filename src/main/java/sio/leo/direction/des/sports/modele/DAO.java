@@ -49,7 +49,7 @@ public class DAO {
     
     
     
-    public static void SeConnecter()
+    public static void SeConnecter() //Connexion à la BDD
     {
         String url="jdbc:mysql://192.168.5.240:3307/directionsportg1";
         String loginBd="adming1";

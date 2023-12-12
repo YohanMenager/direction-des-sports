@@ -12,6 +12,11 @@ import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
 import sio.leo.direction.des.sports.modele.DAO;
 
 /**
@@ -25,37 +30,30 @@ public class CrudInscription {
     
     private ResultSet rs =null;
     
-    /*
-    public void insererLardon(int id, Lardon lardon) throws SQLException{
-        if(!idExist(id)){
-            if(lardon.getDateNais() == null){
-                String requete = "INSERT INTO lardon(id, prenom, nom, cheveux) values ("+id+",'"+lardon.getPrenom()+"', '"+lardon.getNom()+"', '"+lardon.getCheveux()+"');";
-                //System.out.println(requete);
-                smt.executeUpdate(requete);
-                System.out.println("Insertion réussite (sans date de naissance!");
-            }
-            else{
-                String requete = "INSERT INTO lardon(id, prenom, nom, cheveux, ddn) values ("+id+",'"+lardon.getPrenom()+"', '"+lardon.getNom()+"', '"+lardon.getCheveux()+"', '"+lardon.getDateNais()+"');";
-                //System.out.println(requete);
-                smt.executeUpdate(requete);
-                System.out.println("Insertion réussite !");
-            }
-            
-        }
-        else
-            System.out.println("Impossible d'ajouter ce lardon dans la table car son id existe déjà !");
-    }
-    */
-    
-    public String insertUser(String id, String mdp, String nom, String prenom, String cp, LocalDate date, String num, String qst) throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception{
+    public String insertUser(String id, String mdp, String nom, String prenom, String cp, LocalDate date, String num, String qst, int idqst) throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception{
         try{
-            if(!id.isEmpty() && !mdp.isEmpty() && !nom.isEmpty() && !num.isEmpty() && !qst.isEmpty() && !cp.isEmpty())
+            if(!id.isEmpty() && !mdp.isEmpty() && !nom.isEmpty() && !num.isEmpty() && !qst.isEmpty() && !cp.isEmpty() && !String.valueOf(idqst).isEmpty() )
                 if(!idExist(id)){
+                    LocalDate currentDate = LocalDate.now();
+                    int yearsDifference = currentDate.getYear() - date.getYear();
+                    int categorie = 0;
+                    if(yearsDifference<12)
+                        categorie=4;
+                    else if(yearsDifference<25)
+                        categorie = 1;
+                    else if(yearsDifference>65)
+                        categorie = 2;
                     int cpInt = Integer.parseInt(cp);
                     String originalData = mdp;
                     String encryptedMdp = Encryptor.encrypt(originalData);
-                    String requete = "INSERT INTO utilisateur(id, mdp, nom, prenom, cp, ddn, num, qst) values ("+id+",'"+encryptedMdp+"','"+nom+"', '"+prenom+"', '"+cpInt+"','"+date+"', '"+num+"', '"+qst+"');";
+                    String requete = "INSERT INTO UTILISATEUR value ('"+id+"','"+nom+"','"+prenom+"','"+num+"','"+date+"', '"+categorie+"', '"+encryptedMdp+"', '"+qst+"', '"+cpInt+"', '"+idqst+"');";
                     smt.executeUpdate(requete);
+                    String requetePis = "INSERT INTO SOLDETICKET(ACT_ID, UTI_ID, SOLDE_DATE, SOLDE_QUANTITE) value ('pis','"+id+"','"+date+"',0);";
+                    smt.executeUpdate(requetePis);
+                    String requetePat = "INSERT INTO SOLDETICKET(ACT_ID, UTI_ID, SOLDE_DATE, SOLDE_QUANTITE) value ('pat','"+id+"','"+date+"',0);";
+                    smt.executeUpdate(requetePat);
+                    String requeteFit = "INSERT INTO SOLDETICKET(ACT_ID, UTI_ID, SOLDE_DATE, SOLDE_QUANTITE) value ('fit','"+id+"','"+date+"',0);";
+                    smt.executeUpdate(requeteFit);
                     return "Inscription réussie";
                 }
             else{
@@ -74,7 +72,7 @@ public class CrudInscription {
                 if(idExist(id)){
                     String originalData = mdp;
                     String encryptedMdp = Encryptor.encrypt(originalData);
-                    String requete = "SELECT mdp FROM utilisateur WHERE id = ? AND mdp = ?";
+                    String requete = "SELECT UTI_PASSWORD FROM UTILISATEUR WHERE UTI_ID = ? AND UTI_MDP = ?";
                     PreparedStatement preparedStatement = cnx.prepareStatement(requete, ResultSet.TYPE_SCROLL_INSENSITIVE);
                     preparedStatement.setString(1, id);
                     preparedStatement.setString(2, encryptedMdp);
@@ -82,7 +80,7 @@ public class CrudInscription {
                     //System.out.println(encryptedMdp);
                     this.rs = preparedStatement.executeQuery();
                     while(rs.next()){
-                        String mdpCrypt  = rs.getString("mdp");
+                        String mdpCrypt  = rs.getString("UTI_PASSWORD");
                         //System.out.println(mdpCrypt);
                         if(encryptedMdp.equals(mdpCrypt)){
                             return true;
@@ -102,25 +100,26 @@ public class CrudInscription {
         }
     }
     
-    /*
-    public void updateLardonCheveux(int id, String nom) throws SQLException{
-        if(idExist(id)){
-            String requete = "UPDATE lardon SET cheveux ='"+nom+"' WHERE id ="+id+";";
-            
-            smt.execute(requete);
-            System.out.println("Modification réussie de l'id : " + id );
+    
+    public ArrayList<String> getQuestionSecrete() throws SQLException{
+        
+        ArrayList<String> options = new ArrayList<>();
+        String query = "SELECT question FROM QUESTION_SECRETE ORDER BY id";
+        try (PreparedStatement preparedStatement = cnx.prepareStatement(query);) {
+            this.rs = preparedStatement.executeQuery();
+            while (this.rs.next()) {
+                // Ajouter chaque élément à la liste
+                options.add(rs.getString("question"));
+            }
         }
-        else{
-            System.out.println("L'id : " + id + " n'existe pas");
-        }
+        return options;
     }
-*/
     
     public Boolean idExist(String id) throws SQLException, SQLIntegrityConstraintViolationException{
-        String requete = "SELECT id FROM utilisateur WHERE id ="+id+";";
+        String requete = "SELECT UTI_ID FROM UTILISATEUR WHERE UTI_ID ='"+id+"';";
         this.rs = smt.executeQuery(requete);
         while(rs.next()){
-            String idAll  = rs.getString("id");
+            String idAll  = rs.getString("UTI_ID");
             if(idAll.equals(id)){
                 return true;
             }

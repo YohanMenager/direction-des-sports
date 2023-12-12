@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import sio.leo.direction.des.sports.modele.DAO;
 import sio.leo.direction.des.sports.modele.CrudConnexion;
@@ -25,10 +26,12 @@ import sio.leo.direction.des.sports.modele.CrudConnexion;
  */
 public class AccueilConnexionController implements Initializable {
 
+    // Déclaration des variables FXML
+    
     @FXML
     private TextField idField;
     @FXML
-    private TextField mdpField;
+    private PasswordField mdpField;
     @FXML
     private Button btnMdpOublie;
     @FXML
@@ -38,12 +41,12 @@ public class AccueilConnexionController implements Initializable {
     @FXML
     private Label erreurLabel;
     
-    private String idBase = "z";
-    private String mdpBase = "z";
-    
+
+    //Initialisation de la connexion au DAO pour la BDD
    Connection cnx = DAO.getConnection();
     Statement smt = DAO.getStatement();
     
+    //Initialisation du Crud pour les méthodes de vérifications 
     CrudConnexion crudCnx = new CrudConnexion();
 //    
     
@@ -52,26 +55,36 @@ public class AccueilConnexionController implements Initializable {
         // TODO
     }    
     
-  
+  /**
+   * Vérification des champs par rapport à la BDD
+   * @throws IOException
+   * @throws Exception 
+   */
     @FXML
     private void validerConnexion() throws IOException, Exception{
-        if(crudCnx.getMdp(idField.getText(), mdpField.getText())){
-            App.setRoot("ConsommerTickets");
+        if(crudCnx.getMdp(idField.getText(), mdpField.getText())){ 
+            App.setUtilisateur(crudCnx.requeteUtilisateur(idField.getText())); 
+            System.out.println("nom = " + App.getUtilisateur().getNom() + ", prénom = " + App.getUtilisateur().getNom() + ", id = " + App.getUtilisateur().getId()); 
+            App.setRoot("ConsommerTickets"); // Changement de scene vers la page ConsommerTicket
         }
         else{
-            erreurLabel.setText("Identifiant / Mot de passe incorrect");
+            erreurLabel.setText("Identifiant / Mot de passe incorrect"); //Message d'erreur si l'identifiant et le mdp ne sont pas identiques
         }
     }
     
-    
+    /**
+     * Méthodes pour le bouton inscription pour changer de scene
+     * @throws IOException 
+     */
+  
     @FXML
     private void switchToInscription() throws IOException{
         App.setRoot("Inscription");
     }
-     @FXML
-    private void switchToConsommerTickets() throws IOException{
-        App.setRoot("ConsommerTickets");
-    }
+    /**
+     * Méthodes pour le bouton MdpOublie pour changer de scene
+     * @throws IOException 
+     */
     @FXML
     private void switchToMdpOublie() throws IOException{
         App.setRoot("MdpOubli");

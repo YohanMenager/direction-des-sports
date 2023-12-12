@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import sio.leo.direction.des.sports.modele.DAO;
 
+
 /**
  * JavaFX App
  */
@@ -22,6 +23,7 @@ public class App extends Application {
     private static Connection cnx = null;
     //pour exécuter des requêtes
     private static Statement smt=null;
+    private static Utilisateur utilisateur;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -32,6 +34,14 @@ public class App extends Application {
         cnx = DAO.getConnection();
         
         smt = DAO.getStatement();
+    }
+    
+    public static void setUtilisateur(Utilisateur util) {
+        utilisateur = util;
+    }
+    
+    public static Utilisateur getUtilisateur() {
+        return utilisateur;
     }
 
     static void setRoot(String fxml) throws IOException {
