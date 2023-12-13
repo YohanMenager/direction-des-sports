@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="514.0" prefWidth="714.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sio.leo.direction.des.sports.MdpOubliController">
+   <children>
+      <Label layoutX="147.0" layoutY="24.0" text="Mot de passe oublié">
+         <font>
+            <Font size="34.0" />
+         </font></Label>
+      <Label fx:id="QuestionSecrete" layoutX="149.0" layoutY="209.0" prefHeight="21.0" prefWidth="384.0" text="Question secrète" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="181.0">
+         <font>
+            <Font size="15.0" />
+         </font></Label>
+      <Button fx:id="validerQuestion" layoutX="401.0" layoutY="270.0" mnemonicParsing="false" onAction="#validerReponse" text="Valider" />
+      <TextField fx:id="reponseQuestionSecrete" layoutX="226.0" layoutY="270.0" promptText="votre réponse" />
+      <Label fx:id="nouveauMdp" layoutX="56.0" layoutY="349.0" text="Votre nouveau mot de passe" />
+      <PasswordField fx:id="entreeNouveauMdp" layoutX="226.0" layoutY="345.0" />
+      <PasswordField fx:id="entreeConfirmerMdp" layoutX="226.0" layoutY="391.0" />
+      <Label fx:id="ConfirmerMdp" layoutX="56.0" layoutY="395.0" text="Confirmer le mot de passe" />
+      <Button fx:id="validerNvMdp" layoutX="274.0" layoutY="436.0" mnemonicParsing="false" onAction="#validerMotDePasse" text="Valider" />
+      <Label fx:id="Erreur" layoutX="286.0" layoutY="192.0" />
+      <Label layoutX="257.0" layoutY="100.0" text="Votre identifiant" />
+      <TextField fx:id="identifiant" layoutX="227.0" layoutY="128.0" />
+      <Button fx:id="validerId" layoutX="401.0" layoutY="128.0" mnemonicParsing="false" onAction="#getQuestionSecrete" text="Valider" />
+      <Button layoutX="484.0" layoutY="128.0" mnemonicParsing="false" onAction="#retour" text="retour" />
+   </children>
+</AnchorPane>
