@@ -32,7 +32,7 @@ public class CrudInscription {
     
     public String insertUser(String id, String mdp, String nom, String prenom, String cp, LocalDate date, String num, String qst, int idqst) throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception{
         try{
-            if(!id.isEmpty() && !mdp.isEmpty() && !nom.isEmpty() && !num.isEmpty() && !qst.isEmpty() && !cp.isEmpty())
+            if(!id.isEmpty() && !mdp.isEmpty() && !nom.isEmpty() && !num.isEmpty() && !qst.isEmpty() && !cp.isEmpty() && !String.valueOf(idqst).isEmpty() )
                 if(!idExist(id)){
                     LocalDate currentDate = LocalDate.now();
                     int yearsDifference = currentDate.getYear() - date.getYear();
@@ -46,8 +46,14 @@ public class CrudInscription {
                     int cpInt = Integer.parseInt(cp);
                     String originalData = mdp;
                     String encryptedMdp = Encryptor.encrypt(originalData);
-                    String requete = "INSERT INTO UTILISATEUR value ('"+id+"','"+nom+"','"+prenom+"','"+num+"','"+date+"', '"+categorie+"', '"+encryptedMdp+"', '"+qst+"', '"+cpInt+"', '"+idqst+"',0);";
+                    String requete = "INSERT INTO UTILISATEUR value ('"+id+"','"+nom+"','"+prenom+"','"+num+"','"+date+"', '"+categorie+"', '"+encryptedMdp+"', '"+qst+"', '"+cpInt+"', '"+idqst+"',1);";
                     smt.executeUpdate(requete);
+                    String requetePis = "INSERT INTO SOLDETICKET(ACT_ID, UTI_ID, SOLDE_DATE, SOLDE_QUANTITE) value ('pis','"+id+"','"+date+"',0);";
+                    smt.executeUpdate(requetePis);
+                    String requetePat = "INSERT INTO SOLDETICKET(ACT_ID, UTI_ID, SOLDE_DATE, SOLDE_QUANTITE) value ('pat','"+id+"','"+date+"',0);";
+                    smt.executeUpdate(requetePat);
+                    String requeteFit = "INSERT INTO SOLDETICKET(ACT_ID, UTI_ID, SOLDE_DATE, SOLDE_QUANTITE) value ('fit','"+id+"','"+date+"',0);";
+                    smt.executeUpdate(requeteFit);
                     return "Inscription réussie";
                 }
             else{
