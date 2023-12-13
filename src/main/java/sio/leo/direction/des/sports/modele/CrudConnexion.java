@@ -20,27 +20,40 @@ import sio.leo.direction.des.sports.Utilisateur;
  * @author CAYUELA
  */
 public class CrudConnexion {
+    //Initialisation de la connexion au DAO
   private static final Connection cnx=DAO.getConnection();
     
     private static final Statement smt =DAO.getStatement();
     
+    //Déclaration du resultSet
     private ResultSet rs =null;
     
-     public Boolean getMdp(String id, String mdp) throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception{
+    
+    /**
+     * Méthode qui vérifie si l'id et le mdp sont identiques à la BDD
+     * @param id
+     * @param mdp
+     * @return
+     * @throws IOException
+     * @throws SQLException
+     * @throws SQLIntegrityConstraintViolationException
+     * @throws Exception 
+     */
+     public Boolean getMdp(String id, String mdp) throws IOException, SQLException, SQLIntegrityConstraintViolationException, Exception{ 
         try{
             if(!id.isEmpty() && !mdp.isEmpty()){
                 if(idExist(id)){
                     String originalData = mdp;
                     String encryptedMdp = Encryptor.encrypt(originalData);
-                    String requete = "SELECT UTI_PASSWORD FROM UTILISATEUR WHERE UTI_ID = ? AND UTI_PASSWORD = ?";
-                    PreparedStatement preparedStatement = cnx.prepareStatement(requete, ResultSet.TYPE_SCROLL_INSENSITIVE);
+                    String requete = "SELECT UTI_PASSWORD FROM UTILISATEUR WHERE UTI_ID = ? AND UTI_PASSWORD = ?"; //Selectione le mdp et l'id dans la base
+                    PreparedStatement preparedStatement = cnx.prepareStatement(requete, ResultSet.TYPE_SCROLL_INSENSITIVE); // execute la requête ci-dessus
                     preparedStatement.setString(1, id);
                     preparedStatement.setString(2, encryptedMdp);
                     //System.out.println(mdp);
                     //System.out.println(encryptedMdp);
                     this.rs = preparedStatement.executeQuery();
                     while(rs.next()){
-                        String mdpCrypt  = rs.getString("UTI_PASSWORD");
+                        String mdpCrypt  = rs.getString("UTI_PASSWORD"); //Crypte le mdp et vérifie s'il est le même que celui crypter dans la BDD
                         //System.out.println(mdpCrypt);
                         if(encryptedMdp.equals(mdpCrypt)){
                             return true;
@@ -60,7 +73,12 @@ public class CrudConnexion {
         }
     }
      
-    public Utilisateur requeteUtilisateur(String id)
+     /**
+      * Méthode qui instancie un utilisateur avec les informations de la BBD lors de la connexion
+      * @param id
+      * @return 
+      */
+    public Utilisateur requeteUtilisateur(String id) 
     {
         Utilisateur leClient;
         try
@@ -81,7 +99,7 @@ public class CrudConnexion {
                 int categorie = rs.getInt("CAT_CODE");
                 String telephone =rs.getString("UTI_TELEPHONE"); 
                 
-                leClient = new Utilisateur(id, nom, prenom, ddn, categorie, telephone);
+                leClient = new Utilisateur(id, nom, prenom, ddn, categorie, telephone); //Crée un nouvel utilisateur lors de la connexion
                 return leClient;
             }
             
@@ -94,7 +112,14 @@ public class CrudConnexion {
         return null;
         
     }
-     
+        
+       /**
+        * Méthode qui vérifie si l'id existe dans la BDD
+        * @param id
+        * @return
+        * @throws SQLException
+        * @throws SQLIntegrityConstraintViolationException 
+        */
        public Boolean idExist(String id) throws SQLException, SQLIntegrityConstraintViolationException{
         String requete = "SELECT UTI_ID FROM UTILISATEUR WHERE UTI_ID ='"+id+"';";
         this.rs = smt.executeQuery(requete);
