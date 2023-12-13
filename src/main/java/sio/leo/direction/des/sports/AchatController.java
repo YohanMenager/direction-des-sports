@@ -61,8 +61,7 @@ public class AchatController implements Initializable {
     Double TTPA = 0.0;
     Double total = 0.0;
 
-    public AchatController() {
-    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -72,7 +71,8 @@ public class AchatController implements Initializable {
             setTarifUnitaire(App.getUtilisateur().getId(), "pat");
             setTarifUnitaire(App.getUtilisateur().getId(), "pis");
 
-            // Add listenerspour calculer en temps réel les saisies
+            // Add listeners pour calculer en temps réel les saisies
+
             TarifTotal_Fitness.textProperty().addListener((observable, oldValue, newValue) -> setTarifTotal());
             TarifTotal_Patinoire.textProperty().addListener((observable, oldValue, newValue) -> setTarifTotal());
             TarifTotal_Piscine.textProperty().addListener((observable, oldValue, newValue) -> setTarifTotal());
@@ -86,14 +86,17 @@ public class AchatController implements Initializable {
     /**
      * méthode pour retourner à la page précédente
     **/
+
     @FXML
     public void switchToConsommerTickets() throws IOException {
         App.setRoot("ConsommerTickets");
     }
 
+
     /**
      * méthode pour finaliser l'achat et payer
      */
+
     @FXML
     public void Achatfini() {
         try {
@@ -112,7 +115,9 @@ public class AchatController implements Initializable {
                 AchatFait.setText("Veuillez saisir au moins une quantité.");
                 return;
             }
+
 //modifier solde dans ACHETERTICKET et modifier solde ticket
+
 
 
 
@@ -162,6 +167,7 @@ public class AchatController implements Initializable {
                 }
             }
 
+
 // ajoute un message pour confirmer la transaction
             AchatFait.setText("L'achat a été enregistré.");
 
@@ -171,9 +177,11 @@ public class AchatController implements Initializable {
             AchatFait.setText("Erreur lors de l'achat.");
         }
     }
+
 /**
  * la méthode SetTarifUnitaire set le tarif d'un ticket par rapport à sa catégorie
 */
+
     @FXML
     public void setTarifUnitaire(String user, String sport) throws SQLException {
 
@@ -206,9 +214,11 @@ public class AchatController implements Initializable {
         }
     }
 
+
     /**
      * méthode pour afficher le total de la commande par rapport au sport
      */
+
     @FXML
     public void setTarifTotal_Piscine() {
         int quantite = Integer.parseInt(QuantitePiscine.getText());
@@ -236,6 +246,7 @@ public class AchatController implements Initializable {
     /**
      * méthode pour afficher le total de la commande par rapport au sport
      */
+
     @FXML
     public void setTarifTotal_Patinoire() {
         int quantite = Integer.parseInt(QuantitePatinoire.getText());
@@ -264,6 +275,7 @@ public class AchatController implements Initializable {
     /**
      * méthode pour afficher le total de la commande par rapport au sport
      */
+
     @FXML
     public void setTarifTotal_Fitness() {
         int quantite = Integer.parseInt(QuantiteFitness.getText());
@@ -290,6 +302,7 @@ public class AchatController implements Initializable {
     /**
      * méthode pour afficher le total de la commande
      */
+
     @FXML
     public void setTarifTotal() {
 //        Double total = 0.0;
