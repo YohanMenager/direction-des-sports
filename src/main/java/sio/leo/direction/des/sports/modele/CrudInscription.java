@@ -46,7 +46,7 @@ public class CrudInscription {
                     int cpInt = Integer.parseInt(cp);
                     String originalData = mdp;
                     String encryptedMdp = Encryptor.encrypt(originalData);
-                    String requete = "INSERT INTO UTILISATEUR value ('"+id+"','"+nom+"','"+prenom+"','"+num+"','"+date+"', '"+categorie+"', '"+encryptedMdp+"', '"+qst+"', '"+cpInt+"', '"+idqst+"');";
+                    String requete = "INSERT INTO UTILISATEUR value ('"+id+"','"+nom+"','"+prenom+"','"+num+"','"+date+"', '"+categorie+"', '"+encryptedMdp+"', '"+qst+"', '"+cpInt+"', '"+idqst+"',0);";
                     smt.executeUpdate(requete);
                     return "Inscription réussie";
                 }
